@@ -1,5 +1,5 @@
-import React from 'react';
-import {createContext} from 'react';
+import React, {createContext, useReducer} from 'react';
+import {authReducer} from './authReducer';
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -23,11 +23,17 @@ interface Props {
 }
 
 export const AuthProvider = ({children}: Props) => {
+  const [authState, dispatch] = useReducer(authReducer, authInitialState);
+
+  const signIn = () => {
+    dispatch({type: 'signIn'});
+  };
+
   return (
     <AuthContext.Provider
       value={{
-        authState: authInitialState,
-        signIn: () => {},
+        authState,
+        signIn,
       }}>
       {children}
     </AuthContext.Provider>
